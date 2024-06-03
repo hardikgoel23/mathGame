@@ -2,14 +2,14 @@ from flask import Flask, render_template, request, redirect, url_for, session, g
 import random
 import sqlite3
 import os
-
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 DATABASE = 'leaderboard.db'
 
+# Include enumerate in Jinja2 environment globals
+app.jinja_env.globals.update(enumerate=enumerate)
 
-# Database helper functions
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -24,20 +24,26 @@ def close_connection(exception):
         db.close()
 
 
+# Function to initialize database
 def init_db():
-    with app.app_context():
-        db = get_db()
-        cursor = db.cursor()
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS leaderboard (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+    conn = sqlite3.connect('leaderboard.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS leaderboard (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
                 player_name TEXT NOT NULL,
                 score INTEGER NOT NULL,
                 total_time INTEGER NOT NULL,
                 average_time REAL NOT NULL
-            )
-        ''')
-        db.commit()
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+# Initialize database before each request if it doesn't exist
+@app.before_request
+def before_request():
+    init_db()
 
 
 def query_db(query, args=(), one=False):
