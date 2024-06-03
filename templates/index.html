@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Equation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            background-image: url('static/hello.jpg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            font-size: 18px;
+            padding: 10px;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4682b4;
+            outline: none;
+        }
+
+        .level-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .level-buttons button {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #4682b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .level-buttons button:hover {
+            background-color: #5a9bd4;
+        }
+
+        input[type="submit"] {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #4682b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #5a9bd4;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #4682b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #5a9bd4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Escape Equation</h1>
+        <form id="game-form" action="/start" method="post">
+            <input type="text" name="player_name" placeholder="Enter your name" required>
+            <div class="level-buttons">
+                <button type="button" onclick="setLevelAndSubmit('easy')">Easy</button>
+                <button type="button" onclick="setLevelAndSubmit('hard')">Hard</button>
+            </div>
+        </form>
+        <button onclick="window.location.href='/leaderboard'">View Leaderboard</button>
+    </div>
+
+    <script>
+        function setLevelAndSubmit(level) {
+            const form = document.getElementById('game-form');
+            const levelInput = document.createElement('input');
+            levelInput.type = 'hidden';
+            levelInput.name = 'level';
+            levelInput.value = level;
+            form.appendChild(levelInput);
+            form.submit();
+        }
+    </script>
+</body>
+</html>

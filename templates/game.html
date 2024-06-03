@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Escape Equation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("{{ url_for('static', filename='pythonmathgame.jpg') }}");
+            background-size: cover; /* Ensure the image covers the entire background */
+            background-position: center; /* Center the background image */
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            text-align: center;
+            padding: 20px;
+            color: rgb(0, 0, 0);
+        }
+        h1, h2 {
+            color: rgb(0, 0, 0);
+        }
+        .question {
+            font-size: 30px;
+            margin: 25px;
+        }
+        .score {
+            font-size: 20px;
+            margin: 20px;
+        }
+        .timer {
+            font-size: 25px;
+            margin: 25px;
+        }
+        input[type="text"] {
+            font-size: 18px;
+            padding: 5px;
+            margin: 20px;
+            color: black;
+        }
+        input[type="submit"] {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #4682b4;
+            color: rgb(0, 0, 0);
+            border: none;
+            border-radius: 5px;
+        }
+        input[type="submit"]:hover {
+            background-color: #5a9bd4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Escape Equation</h1>
+    <h2>Player: {{ player_name }}</h2>
+    <div class="score">Score: {{ score }}</div>
+    <div class="timer">Time left: <span id="timeleft">{{ timeleft }}</span> seconds</div>
+    <div class="question">{{ num1 }} {{ op }} {{ num2 }}</div>
+    <form method="POST" action="{{ url_for('submit') }}">
+        <input type="text" name="answer" autofocus>
+        <input type="hidden" id="timeleft_input" name="timeleft" value="{{ timeleft }}">
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        let timeleft = {{ timeleft }};
+        const timerElement = document.getElementById('timeleft');
+        const timeleftInput = document.getElementById('timeleft_input');
+
+        function updateTimer() {
+            if (timeleft > 0) {
+                timeleft--;
+                timerElement.textContent = timeleft;
+                timeleftInput.value = timeleft;
+                setTimeout(updateTimer, 1000);
+            }
+        }
+
+        updateTimer();
+    </script>
+</body>
+</html>
